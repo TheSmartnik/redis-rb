@@ -332,10 +332,12 @@ class TestInternals < Test::Unit::TestCase
         begin
           tries = 5
           begin
-            sa = Socket.pack_sockaddr_in(1024 + Random.rand(63076), hosts[af])
+            random = Random.rand(63076)
+            sa = Socket.pack_sockaddr_in(1024 + random, hosts[af])
             s.bind(sa)
           rescue Errno::EADDRINUSE
             tries -= 1
+            puts "Tried port: #{random}, retries left #{tries}"
             retry if tries > 0
 
             raise
